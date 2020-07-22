@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cb44f5c0-d5b8-4371-9689-f8520db14af8" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1cku370HVZiX3BTYgHVu80994QG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\IntelliJ IDEA Project\complete\svm\data" />
+      <recent name="E:\IntelliJ IDEA Project\complete\svm" />
+      <recent name="E:\IntelliJ IDEA Project\complete\svm\src\main\java" />
+      <recent name="E:\IntelliJ IDEA Project\complete\svm\src\main\java\libsvm" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\IntelliJ IDEA Project\complete\svm\src\main\resources" />
+      <recent name="E:\IntelliJ IDEA Project\complete\svm\src\main" />
+      <recent name="E:\IntelliJ IDEA Project\complete\svm\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Test">
+    <configuration name="Solution" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Solution" />
+      <module name="svm" />
+      <option name="VM_PARAMETERS" value="-Xmx1024M" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SvmTrain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SvmTrain" />
+      <module name="svm" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
+      <module name="svm" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Solution" />
+      <item itemvalue="Application.SvmTrain" />
+      <item itemvalue="Application.Test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Solution" />
+        <item itemvalue="Application.SvmTrain" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cb44f5c0-d5b8-4371-9689-f8520db14af8" name="Default Changelist" comment="" />
+      <created>1591084709616</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591084709616</updated>
+      <workItem from="1591084713035" duration="169000" />
+      <workItem from="1591084895935" duration="4112000" />
+      <workItem from="1591146883889" duration="28317000" />
+      <workItem from="1591261256340" duration="3008000" />
+      <workItem from="1591270055887" duration="4681000" />
+      <workItem from="1591274803894" duration="191000" />
+      <workItem from="1591275014039" duration="6079000" />
+      <workItem from="1591431170818" duration="443000" />
+      <workItem from="1591855925677" duration="11497000" />
+      <workItem from="1592877863583" duration="2550000" />
+      <workItem from="1593761234181" duration="2700000" />
+      <workItem from="1594274401032" duration="599000" />
+      <workItem from="1594707529988" duration="594000" />
+      <workItem from="1595381374258" duration="19439000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591431600316">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="414" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1591431600316" />
+    <state x="690" y="285" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1595399250565">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="690" y="285" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1595399250565" />
+    <state width="1876" height="379" key="GridCell.Tab.0.bottom" timestamp="1595397759761">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="379" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1595397759761" />
+    <state width="1876" height="379" key="GridCell.Tab.0.center" timestamp="1595397759760">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="379" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1595397759760" />
+    <state width="1876" height="379" key="GridCell.Tab.0.left" timestamp="1595397759760">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="379" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1595397759760" />
+    <state width="1876" height="379" key="GridCell.Tab.0.right" timestamp="1595397759761">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="379" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1595397759761" />
+    <state width="1876" height="355" key="GridCell.Tab.1.bottom" timestamp="1594005576055">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="355" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1594005576055" />
+    <state width="1876" height="355" key="GridCell.Tab.1.center" timestamp="1594005576055">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="355" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1594005576055" />
+    <state width="1876" height="355" key="GridCell.Tab.1.left" timestamp="1594005576055">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="355" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1594005576055" />
+    <state width="1876" height="355" key="GridCell.Tab.1.right" timestamp="1594005576055">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="355" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1594005576055" />
+    <state x="461" y="171" key="SettingsEditor" timestamp="1591431395899">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="461" y="171" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1591431395899" />
+  </component>
+</project>
