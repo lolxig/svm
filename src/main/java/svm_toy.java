@@ -277,7 +277,7 @@ public class svm_toy extends Applet {
 			}
 
 			// build model & classify
-			SvmModel model = SVM.svm_train(prob, param);
+			SvmModel model = SVM.svmTrain(prob, param);
 			SvmNode[] x = new SvmNode[1];
 			x[0] = new SvmNode();
 			x[0].index = 1;
@@ -339,7 +339,7 @@ public class svm_toy extends Applet {
 			}
 
 			// build model & classify
-			SvmModel model = SVM.svm_train(prob, param);
+			SvmModel model = SVM.svmTrain(prob, param);
 			SvmNode[] x = new SvmNode[2];
 			x[0] = new SvmNode();
 			x[1] = new SvmNode();

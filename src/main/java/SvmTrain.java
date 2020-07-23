@@ -4,11 +4,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 class SvmTrain {
-    private SvmParameter param;        //通过命令行获取的各种参数
+    private SvmParameter param;     //通过命令行获取的各种参数
     private SvmProblem prob;        //读取的特征集和标签集数据转换为问题
     private String input_file_name; //输入文件路径
     private String model_file_name; //模型文件路径
-    private int cross_validation;    //交叉验证选择核函数标志位，默认为0，可以通过-v 参数设置为1
+    private int cross_validation;   //交叉验证选择核函数标志位，默认为0，可以通过-v 参数设置为1
     private int nr_fold;            //n重交叉验证
 
     private String separator = "\t";    //数据分隔符
@@ -17,7 +17,9 @@ class SvmTrain {
     };
 
     private static void exit_with_help() {
-        System.out.print("Usage: svm_train [options] training_set_file [model_file]\n"
+        System.out.print(
+                "Usage: svm_train [options] training_set_file [model_file]\n"
+
                 + "options:\n"
 
                 //设置SVM的类型
@@ -77,7 +79,7 @@ class SvmTrain {
         System.exit(1);
     }
 
-    //交叉验证选择最好的核函数
+    //交叉验证
     private void doCrossValidation() {
         int total_correct = 0;  //分类正确的数量
         double total_error = 0; //分类错误的数量
@@ -87,7 +89,7 @@ class SvmTrain {
         SVM.svmCrossValidation(prob, param, nr_fold, target);
         if (param.svm_type == SvmParameter.EPSILON_SVR || param.svm_type == SvmParameter.NU_SVR) {
             for (int i = 0; i < prob.size; i++) {
-                double y = prob.label[i];
+                double y = prob.label.get(i);
                 double v = target[i];
                 total_error += (v - y) * (v - y);
                 sumv += v;
@@ -103,23 +105,24 @@ class SvmTrain {
                     + "\n");
         } else {
             for (int i = 0; i < prob.size; i++)
-                if (target[i] == prob.label[i])
+                if (target[i] == prob.label.get(i))
                     ++total_correct;
             System.out.print("Cross Validation Accuracy = " + 100.0 * total_correct / prob.size + "%\n");
         }
     }
 
     private void run(String[] params) throws IOException {
-        //解析命令行，将数据读入param，并获取input file、model file(可选)
-        //读取命令行的文件名和参数，初始化svm_parameter结构，通过传入的参数或者默认值，设置一些必须的参数
-        parse_command_line(params);
+        //解析命令行，将传入的命令行配置存放到SvmParameter param中，并获取input file、model file(如果有)
+        //在命令行里没有设置的参数，将赋予一些默认值
+        parseCommandLine(params);
 
-        //读取数据文件，并分配数据内存
-        //初始化svm_problem结构
-        //	- l：样本的行数
-        //	- y：样本的所属类标签向量，lx1维
-        //	- x：样本的所有特征向量，lxn维，其中n是样本的特征数
-        read_problem();
+        //读取数据文件，并将数据切分成特征集和标签集，存放到SvmProblem prob中
+        //SvmProblem结构(修改后)：
+        //	- size: 数据集样本个数
+        //	- label: 标签集
+        //	- X: 特征集
+        readProblem();
+
         //参数检查
         String errorMsg = SVM.svmCheckParameter(prob, param);
 
@@ -129,25 +132,23 @@ class SvmTrain {
         }
 
         if (cross_validation != 0) {
-            //根据交叉验证选择最好的核函数
+            //训练多个模型并进行n-fold交叉验证，并打印相关信息（例如均方误差、精度等信息）
             doCrossValidation();
         } else {
-            //训练模型，填充svm_model结构
-            //SVM模型
-            SvmModel model = SVM.svm_train(prob, param);
-            //保存模型
-            SVM.svm_save_model(model_file_name, model);
+            //根据配置训练模型并进行保存
+            SvmModel model = SVM.svmTrain(prob, param);
+            SVM.svmSaveModel(model_file_name, model);
         }
     }
 
 
     public static void main(String[] argv) throws IOException {
-
+        //输入命令行参数
         String inputParams = "data/testSet.txt";
+        //切割命令行参数
         String[] params = inputParams.split(" ");
-
-        SvmTrain t = new SvmTrain();
-        t.run(params);
+        //将命令行参数传入并开始运行程序
+        new SvmTrain().run(params);
     }
 
     private static double atof(String s) {
@@ -163,7 +164,7 @@ class SvmTrain {
         return Integer.parseInt(s);
     }
 
-    private void parse_command_line(String[] argv) {
+    private void parseCommandLine(String[] argv) {
         int i;
         SvmPrintInterface print_func = null; // default printing to stdout
 
@@ -265,7 +266,7 @@ class SvmTrain {
         }
 
         //设置打印函数
-        SVM.svm_set_print_string_function(print_func);
+        SVM.svmSetPrintStringFunction(print_func);
 
         if (i >= argv.length)
             exit_with_help();
@@ -285,7 +286,7 @@ class SvmTrain {
 
     // read in a problem (in svmlight format)
 
-    private void read_problem() throws IOException {
+    private void readProblem() throws IOException {
 
     	//获取输入文件的数据，存放至内存中
         try (BufferedReader in =

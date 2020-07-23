@@ -1285,12 +1285,12 @@ public class SVM {
         svm_print_string.print(s);
     }
 
-    private static void solve_c_svc(SvmProblem prob,        //数据集
-                                    SvmParameter param,     //参数
-                                    double[] alpha,            //待求的alpha值
-                                    Solver.SolutionInfo si,    //待解决的参数
-                                    double Cp,                //第一个类的权重
-                                    double Cn                //第二个类的权重
+    private static void solveCSvc(SvmProblem prob,        //数据集
+                                  SvmParameter param,     //参数
+                                  double[] alpha,         //待求的alpha值
+                                  Solver.SolutionInfo si, //待解决的参数
+                                  double Cp,              //第一个类的权重
+                                  double Cn               //第二个类的权重
     ) {
         //传入的样本的大小
         int l = prob.size;
@@ -1480,7 +1480,7 @@ public class SVM {
         //根据传入的参数选择训练模型
         switch (param.svm_type) {
             case SvmParameter.C_SVC:
-                solve_c_svc(prob, param, alpha, si, Cp, Cn);
+                solveCSvc(prob, param, alpha, si, Cp, Cn);
                 break;
             case SvmParameter.NU_SVC:
                 solve_nu_svc(prob, param, alpha, si);
@@ -1761,7 +1761,7 @@ public class SVM {
                 subparam.weight_label[1] = -1;
                 subparam.weight[0] = Cp;
                 subparam.weight[1] = Cn;
-                SvmModel submodel = svm_train(subprob, subparam);
+                SvmModel submodel = svmTrain(subprob, subparam);
                 for (j = begin; j < end; j++) {
                     double[] dec_value = new double[1];
                     svm_predict_values(submodel, prob.X[perm[j]], dec_value);
@@ -1817,7 +1817,7 @@ public class SVM {
     private static void svmGroupClasses(SvmProblem prob,
 										int[] nr_class_ret,   //返回类的数量
 										int[][] label_ret,    //返回原始标签的值
-										int[][] start_ret,    //各类样本集中排列后的起始点
+										int[][] start_ret,    //各类样本集中排列后的起始点，与perm一起使用
 										int[][] count_ret,    //记录每个类的数量
 										int[] perm            //各样本集中排列以后的序号
     ) {
@@ -1865,21 +1865,22 @@ public class SVM {
         //
         // 如果类标签只有两个，则进行顺序调整
         if (nr_class == 2 && label[0] == -1 && label[1] == +1) {
-            do {
+            {
                 int tmp = label[0];
                 label[0] = label[1];
                 label[1] = tmp;
-            } while (false);
-            do {
+            }
+            {
                 int tmp = count[0];
                 count[0] = count[1];
                 count[1] = tmp;
-            } while (false);
+            }
             for (int i = 0; i < l; i++) {
-                if (data_label[i] == 0)
+                if (data_label[i] == 0) {
                     data_label[i] = 1;
-                else
+                } else {
                     data_label[i] = 0;
+                }
             }
         }
 
@@ -1904,7 +1905,7 @@ public class SVM {
     //
     // Interface functions
     //
-    public static SvmModel svm_train(SvmProblem prob, SvmParameter param) {
+    public static SvmModel svmTrain(SvmProblem prob, SvmParameter param) {
         //需要保存的模型结构
         SvmModel model = new SvmModel();
         //给模型参数，没设置的话，为默认参数
@@ -1950,6 +1951,7 @@ public class SVM {
                     ++j;
                 }
         } else {
+            //一般分类，典型如C_SVC
             // classification
             int l = prob.size;
             int[] tmp_nr_class = new int[1];
@@ -1961,41 +1963,54 @@ public class SVM {
             //取得各种参数
             svmGroupClasses(prob, tmp_nr_class, tmp_label, tmp_start, tmp_count, perm);
             int nr_class = tmp_nr_class[0];    //类的数量
-            int[] label = tmp_label[0];        //标签
-            int[] start = tmp_start[0];        //类开始的下标
+            int[] label = tmp_label[0];        //类标签
+            int[] start = tmp_start[0];        //类开始的下标，与perm一起使用
             int[] count = tmp_count[0];        //每个类的数量
 
             //如果类为1，则出错
-            if (nr_class == 1)
+            if (nr_class == 1) {
                 SVM.info("WARNING: training data in only one class. See README for details.\n");
+            }
 
             //将训练集的特征集按顺序排列出来
 //            SvmNode[][] x = new SvmNode[l][];
-			List<Double[]> x = new ArrayList<>();
-            int i;
-            for (i = 0; i < l; i++)
-                x.add(prob.X.get(perm[i]));    //按照之前排序的类标签来重排特征集
+//            for (int i = 0; i < l; i++) {
+//                x.add(prob.X.get(perm[i]));
+//            }
+
+            List<Double[]> x = new ArrayList<>();
+            //按照之前排序的类标签来重排特征集
+            for (int index : perm) {
+                x.add(prob.X.get(index));
+            }
 
             //如果有类权重，则计算，如果没有，则设置为默认，即所有类权重一样
             double[] weighted_C = new double[nr_class];
-            for (i = 0; i < nr_class; i++)
+            for (int i = 0; i < nr_class; i++) {
                 weighted_C[i] = param.C;
-            for (i = 0; i < param.nr_weight; i++) {
+            }
+            //nr_weight记录了从命令行输入的需要设置权重的标签的数量
+            //weight_label记录了从命令行输入的需要设置权重的标签值
+            //weight记录了从命令行输入的需要设置的权重，与weight_label一起使用
+            for (int i = 0; i < param.nr_weight; i++) {
                 int j;
-                for (j = 0; j < nr_class; j++)
-                    if (param.weight_label[i] == label[j])
+                for (j = 0; j < nr_class; j++) {
+                    if (param.weight_label[i] == label[j]) {
                         break;
-                if (j == nr_class)
+                    }
+                }
+                if (j == nr_class) {
                     System.err.print(
-                            "WARNING: class label " + param.weight_label[i] + " specified in weight is not found\n");
-                else
+                            "WARNING: class label " + param.weight_label[i] + " specified in weight is not found.\n");
+                } else {
                     weighted_C[j] *= param.weight[i];
+                }
             }
 
             //对于多分类问题，采用1-V-1的方式构造分类器，最后判断采用竞争方式
             //训练k*(k-1)/2个模型
             boolean[] nonzero = new boolean[l];
-            for (i = 0; i < l; i++)
+            for (int i = 0; i < l; i++)
                 nonzero[i] = false;
             //取k*(k-1)/2个决策函数
             decision_function[] f = new decision_function[nr_class * (nr_class - 1) / 2];
@@ -2008,7 +2023,7 @@ public class SVM {
 
             //训练k*(k-1)/2个模型
             int p = 0;
-            for (i = 0; i < nr_class; i++)
+            for (int i = 0; i < nr_class; i++)
                 for (int j = i + 1; j < nr_class; j++) {
                     //建立一个副数据集，按照类标签排序，并填充l，x，y，即样本大小，特征集，标签集
                     SvmProblem subProb = new SvmProblem();
@@ -2056,17 +2071,17 @@ public class SVM {
             model.nr_class = nr_class;
 
             model.label = new int[nr_class];
-            for (i = 0; i < nr_class; i++)
+            for (int i = 0; i < nr_class; i++)
                 model.label[i] = label[i];
 
             model.rho = new double[nr_class * (nr_class - 1) / 2];
-            for (i = 0; i < nr_class * (nr_class - 1) / 2; i++)
+            for (int i = 0; i < nr_class * (nr_class - 1) / 2; i++)
                 model.rho[i] = f[i].rho;
 
             if (param.probability == 1) {
                 model.probA = new double[nr_class * (nr_class - 1) / 2];
                 model.probB = new double[nr_class * (nr_class - 1) / 2];
-                for (i = 0; i < nr_class * (nr_class - 1) / 2; i++) {
+                for (int i = 0; i < nr_class * (nr_class - 1) / 2; i++) {
                     model.probA[i] = probA[i];
                     model.probB[i] = probB[i];
                 }
@@ -2078,7 +2093,7 @@ public class SVM {
             int total_sv = 0;
             int[] nz_count = new int[nr_class];
             model.nSV = new int[nr_class];
-            for (i = 0; i < nr_class; i++) {
+            for (int i = 0; i < nr_class; i++) {
                 int nSV = 0;
                 for (int j = 0; j < count[i]; j++)
                     if (nonzero[start[i] + j]) {
@@ -2095,7 +2110,7 @@ public class SVM {
             model.SV = new SvmNode[total_sv][];
             model.sv_indices = new int[total_sv];
             p = 0;
-            for (i = 0; i < l; i++)
+            for (int i = 0; i < l; i++)
                 if (nonzero[i]) {
                     model.SV[p] = x[i];
                     model.sv_indices[p++] = perm[i] + 1;
@@ -2103,15 +2118,15 @@ public class SVM {
 
             int[] nz_start = new int[nr_class];
             nz_start[0] = 0;
-            for (i = 1; i < nr_class; i++)
+            for (int i = 1; i < nr_class; i++)
                 nz_start[i] = nz_start[i - 1] + nz_count[i - 1];
 
             model.sv_coef = new double[nr_class - 1][];
-            for (i = 0; i < nr_class - 1; i++)
+            for (int i = 0; i < nr_class - 1; i++)
                 model.sv_coef[i] = new double[total_sv];
 
             p = 0;
-            for (i = 0; i < nr_class; i++)
+            for (int i = 0; i < nr_class; i++)
                 for (int j = i + 1; j < nr_class; j++) {
                     // classifier (i,j): coefficients with
                     // i are in sv_coef[j-1][nz_start[i]...],
@@ -2238,7 +2253,7 @@ public class SVM {
                 subprob.label[k] = prob.label[perm[j]];
                 ++k;
             }
-            SvmModel submodel = svm_train(subprob, param);
+            SvmModel submodel = svmTrain(subprob, param);
             if (param.probability == 1
                     && (param.svm_type == SvmParameter.C_SVC || param.svm_type == SvmParameter.NU_SVC)) {
                 double[] prob_estimates = new double[svm_get_nr_class(submodel)];
@@ -2403,7 +2418,7 @@ public class SVM {
 
     static final String kernel_type_table[] = {"linear", "polynomial", "rbf", "sigmoid", "precomputed"};
 
-    public static void svm_save_model(String model_file_name, SvmModel model) throws IOException {
+    public static void svmSaveModel(String model_file_name, SvmModel model) throws IOException {
         DataOutputStream fp = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(model_file_name)));
 
         SvmParameter param = model.param;
@@ -2731,7 +2746,7 @@ public class SVM {
             return 0;
     }
 
-    public static void svm_set_print_string_function(SvmPrintInterface print_func) {
+    public static void svmSetPrintStringFunction(SvmPrintInterface print_func) {
         if (print_func == null)
             svm_print_string = svm_print_stdout;
         else
